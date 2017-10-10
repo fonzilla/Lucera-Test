@@ -7,10 +7,16 @@ module.exports.api = function(server, fs) {
 
 	server.get('/api/getData', function(req, res) {
 
-		fs.readFile(__dirname + '/data.json', function(err, data) {
+		fs.readFile(__dirname + '/data.json', "utf8", function(err, data) {
 			if (err) throw err;
-      console.log(JSON.parse(data))
-			res.send(200, JSON.parse(data));
+
+      let result = JSON.parse(data);
+
+      result.map(function(item){
+        item.uuid = item.LiquidityProvider + "_" + item.Client
+      })
+
+			res.send(200, result);
 		});
 	});
 
